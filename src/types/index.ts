@@ -24,4 +24,26 @@ export interface ChartData {
   period: string;
   amount: number;
   donations: number;
+  donors: number;
+  averageDonation: number;
+}
+
+export interface DonationTrend {
+  date: string;
+  amount: number;
+  cumulativeAmount: number;
+}
+
+export interface DonorAnalytics {
+  newDonors: number;
+  returningDonors: number;
+  topDonationAmount: number;
+  averageSessionTime: string;
+}
+
+export interface CampaignPerformance {
+  conversionRate: number;
+  shareCount: number;
+  viewCount: number;
+  clickThroughRate: number;
 }

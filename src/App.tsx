@@ -3,7 +3,7 @@ import Header from './components/Header';
 import GeneralDashboard from './components/GeneralDashboard';
 import IndividualDashboard from './components/IndividualDashboard';
 import CampaignsPage from './components/CampaignsPage';
-import { mockCampaigns, mockStats, mockChartData } from './data/mockData';
+import { mockCampaigns, mockStats, mockChartData, mockDonationTrend, mockDonorAnalytics, mockCampaignPerformance } from './data/mockData';
 import { Campaign } from './types';
 
 type View = 'dashboard' | 'campaigns' | 'settings';
@@ -39,23 +39,30 @@ function App() {
       />
 
       {activeTab === 'dashboard' && (
-          selectedCampaign ? (
-              <IndividualDashboard
-                  campaign={selectedCampaign}
-                  chartData={mockChartData}
-                  onBack={handleBackToDashboard}
-              />
+        <>
+          {selectedCampaign ? (
+            <IndividualDashboard
+              campaign={selectedCampaign}
+              chartData={mockChartData}
+              onBack={handleBackToDashboard}
+            />
           ) : (
-              <GeneralDashboard
-                  stats={mockStats}
-                  campaigns={mockCampaigns}
-                  chartData={mockChartData}
-                  onViewCampaign={handleViewCampaign}
-              />
-          )
-        )
-      }
+            <GeneralDashboard
+              stats={mockStats}
+              campaigns={mockCampaigns}
+              chartData={mockChartData}
+              donationTrend={mockDonationTrend}
+              donorAnalytics={mockDonorAnalytics}
+              performance={mockCampaignPerformance}
+              onViewCampaign={handleViewCampaign}
+            />
+          )}
+        </>
+      )}
 
+              donationTrend={mockDonationTrend}
+              donorAnalytics={mockDonorAnalytics}
+              performance={mockCampaignPerformance}
       {activeTab === 'campaigns' && (
         <CampaignsPage
           campaigns={mockCampaigns}
