@@ -36,12 +36,6 @@ export const topDonors = [
   { id: 3, name: 'Jessica dos Santos', total: 10000 }
 ];
 
-export const recentDonations = [
-  { id: 1, donor: 'João da Silva', amount: 200, date: '20/08/2025' },
-  { id: 2, donor: 'Osvaldo Cruz', amount: 200, date: '20/08/2025' },
-  { id: 3, donor: 'Kleber Marques', amount: 200, date: '20/08/2025' }
-];
-
 export const campaignsList = [
   {
     id: 1,
@@ -52,7 +46,8 @@ export const campaignsList = [
     goal: 50000,
     progress: 65.5,
     donations: 147,
-    date: '31/05/2025'
+    date: '31/05/2025',
+    category: 'Emergencial'
   },
   {
     id: 2,
@@ -63,7 +58,8 @@ export const campaignsList = [
     goal: 30000,
     progress: 61.7,
     donations: 89,
-    date: '15/06/2025'
+    date: '15/06/2025',
+    category: 'Reforma'
   },
   {
     id: 3,
@@ -74,7 +70,8 @@ export const campaignsList = [
     goal: 25000,
     progress: 100.0,
     donations: 156,
-    date: '25/12/2024'
+    date: '25/12/2024',
+    category: 'Natal'
   },
   {
     id: 4,
@@ -85,6 +82,37 @@ export const campaignsList = [
     goal: 15000,
     progress: 48.0,
     donations: 43,
-    date: '28/02/2025'
+    date: '28/02/2025',
+    category: 'Volta às Aulas'
+  },
+  {
+    id: 5,
+    title: 'Construção de Poço Artesiano',
+    description: 'Projeto para construção de poço artesiano em comunidade rural',
+    status: 'Ativa' as const,
+    raised: 12300,
+    goal: 20000,
+    progress: 61.5,
+    donations: 67,
+    date: '10/03/2025',
+    category: 'Infraestrutura'
+  },
+  {
+    id: 6,
+    title: 'Campanha de Agasalho 2024',
+    description: 'Arrecadação de roupas e cobertores para o inverno',
+    status: 'Encerrada' as const,
+    raised: 15000,
+    goal: 15000,
+    progress: 100.0,
+    donations: 89,
+    date: '15/06/2024',
+    category: 'Assistência Social'
   }
+];
+
+export const recentDonations = [
+  { id: 1, donor: 'João da Silva', amount: 200, date: '20/08/2025' },
+  { id: 2, donor: 'Osvaldo Cruz', amount: 200, date: '20/08/2025' },
+  { id: 3, donor: 'Kleber Marques', amount: 200, date: '20/08/2025' }
 ];

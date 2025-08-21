@@ -1,47 +1,34 @@
 import React, { useState } from 'react';
 import { Heart, BarChart3, Settings, LogOut, Plus } from 'lucide-react';
-import FilterBar from './components/FilterBar';
-import EvolutionChart from './components/EvolutionChart';
-import DistributionChart from './components/DistributionChart';
-import WeeklyChart from './components/WeeklyChart';
-import TopCampaigns from './components/TopCampaigns';
-import TopDonors from './components/TopDonors';
-import RecentDonations from './components/RecentDonations';
-import CampaignsList from './components/CampaignsList';
-import HighlightBanner from './components/HighlightBanner';
-import {
-  evolutionData,
-  distributionData,
-  weeklyData,
-  topCampaigns,
-  topDonors,
-  recentDonations,
-  campaignsList
-} from './data/dashboardData';
+import DashboardPage from './components/DashboardPage';
+import CampaignsPage from './components/CampaignsPage';
+import CampaignDashboard from './components/CampaignDashboard';
 
-type Tab = 'painel' | 'campanhas' | 'configuracoes';
+type View = 'painel' | 'campanhas' | 'configuracoes' | 'campaign-dashboard';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('painel');
-  const [filters, setFilters] = useState({
-    periodo: 'Último mês',
-    formaPagamento: 'Todos',
-    tipoCampanha: 'Todos',
-    statusCampanha: 'Todos',
-    localidade: 'Todas',
-    doadores: 'Todos'
-  });
-
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
+  const [currentView, setCurrentView] = useState<View>('painel');
+  const [selectedCampaignId, setSelectedCampaignId] = useState<number | null>(null);
 
   const handleCreateCampaign = () => {
     console.log('Criar nova campanha');
   };
 
-  const handleTabChange = (tab: Tab) => {
-    setActiveTab(tab);
+  const handleTabChange = (view: View) => {
+    setCurrentView(view);
+    if (view !== 'campaign-dashboard') {
+      setSelectedCampaignId(null);
+    }
+  };
+
+  const handleCampaignClick = (campaignId: number) => {
+    setSelectedCampaignId(campaignId);
+    setCurrentView('campaign-dashboard');
+  };
+
+  const handleBackToCampaigns = () => {
+    setCurrentView('campanhas');
+    setSelectedCampaignId(null);
   };
 
   return (
@@ -65,7 +52,7 @@ function App() {
               <button
                 onClick={() => handleTabChange('painel')}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'painel'
+                  currentView === 'painel'
                     ? 'text-blue-600 bg-blue-50'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                 }`}
@@ -77,7 +64,7 @@ function App() {
               <button
                 onClick={() => handleTabChange('campanhas')}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'campanhas'
+                  currentView === 'campanhas' || currentView === 'campaign-dashboard'
                     ? 'text-blue-600 bg-blue-50'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                 }`}
@@ -89,7 +76,7 @@ function App() {
               <button
                 onClick={() => handleTabChange('configuracoes')}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'configuracoes'
+                  currentView === 'configuracoes'
                     ? 'text-blue-600 bg-blue-50'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                 }`}
@@ -118,53 +105,22 @@ function App() {
       </header>
 
       {/* Main Content */}
-      {activeTab === 'painel' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Page Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Painel Administrativo</h1>
-            <p className="text-gray-600">Acompanhe o desempenho de suas campanhas</p>
-          </div>
-
-          {/* Filters */}
-          <FilterBar filters={filters} onFilterChange={handleFilterChange} />
-
-          {/* Charts Row 1 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <EvolutionChart data={evolutionData} />
-            <DistributionChart data={distributionData} />
-          </div>
-
-          {/* Highlight Banner */}
-          <HighlightBanner message="Este mês, 45% das doações vieram da campanha Emergencial" />
-
-          {/* Charts Row 2 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <WeeklyChart data={weeklyData} />
-            <TopCampaigns campaigns={topCampaigns} />
-          </div>
-
-          {/* Bottom Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <RecentDonations donations={recentDonations} />
-            <TopDonors donors={topDonors} />
-          </div>
-
-          {/* Campaigns List */}
-          <CampaignsList campaigns={campaignsList} />
-        </div>
+      {currentView === 'painel' && (
+        <DashboardPage onCampaignClick={handleCampaignClick} />
       )}
 
-      {activeTab === 'campanhas' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center py-12">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Campanhas</h1>
-            <p className="text-gray-600">Página em desenvolvimento...</p>
-          </div>
-        </div>
+      {currentView === 'campanhas' && (
+        <CampaignsPage onCampaignClick={handleCampaignClick} />
       )}
 
-      {activeTab === 'configuracoes' && (
+      {currentView === 'campaign-dashboard' && selectedCampaignId && (
+        <CampaignDashboard 
+          campaignId={selectedCampaignId} 
+          onBack={handleBackToCampaigns}
+        />
+      )}
+
+      {currentView === 'configuracoes' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-12">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Configurações</h1>

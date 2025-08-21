@@ -15,9 +15,10 @@ interface Campaign {
 
 interface CampaignsListProps {
   campaigns: Campaign[];
+  onCampaignClick?: (campaignId: number) => void;
 }
 
-const CampaignsList: React.FC<CampaignsListProps> = ({ campaigns }) => {
+const CampaignsList: React.FC<CampaignsListProps> = ({ campaigns, onCampaignClick }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Ativa':
@@ -51,7 +52,11 @@ const CampaignsList: React.FC<CampaignsListProps> = ({ campaigns }) => {
       
       <div className="divide-y divide-gray-200">
         {campaigns.map((campaign) => (
-          <div key={campaign.id} className="p-6 hover:bg-gray-50 transition-colors">
+          <div 
+            key={campaign.id} 
+            className={`p-6 hover:bg-gray-50 transition-colors ${onCampaignClick ? 'cursor-pointer' : ''}`}
+            onClick={() => onCampaignClick && onCampaignClick(campaign.id)}
+          >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -59,7 +64,9 @@ const CampaignsList: React.FC<CampaignsListProps> = ({ campaigns }) => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h4 className="text-lg font-semibold text-gray-900">{campaign.title}</h4>
+                    <h4 className={`text-lg font-semibold text-gray-900 ${onCampaignClick ? 'hover:text-blue-600 transition-colors' : ''}`}>
+                      {campaign.title}
+                    </h4>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(campaign.status)}`}>
                       {campaign.status}
                     </span>
